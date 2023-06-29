@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import {
@@ -9,7 +9,6 @@ import {
   Card,
   CardMedia,
   CardContent,
-  Pagination,
   CircularProgress,
 } from "@mui/material";
 
@@ -23,7 +22,7 @@ const Character = () => {
 
   useEffect(() => {
     getCharacter(Number(params.id));
-  }, [params.id]);
+  }, [params.id, getCharacter]);
 
   return (
     <>

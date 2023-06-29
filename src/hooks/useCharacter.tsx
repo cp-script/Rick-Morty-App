@@ -1,4 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_CHARACTER_DATA, GET_CHARACTER_LIST } from "src/query/Character";
 import { AppDispatch, IReducers } from "src/store";
@@ -27,38 +28,44 @@ const useCharacter = () => {
     (state) => state.character.loading
   );
 
-  const getCharacters = (page: number) => {
-    dispatch(setLoading(true));
-    getCharacterList({
-      variables: { page },
-      onCompleted: (res) => {
-        const { info, results } = res.characters;
-        dispatch(setInfo(info));
-        dispatch(setCharacters(results));
-        dispatch(setLoading(false));
-      },
-      onError: (err) => {
-        console.log(err);
-        dispatch(setLoading(false));
-      },
-    });
-  };
+  const getCharacters = useCallback(
+    (page: number) => {
+      dispatch(setLoading(true));
+      getCharacterList({
+        variables: { page },
+        onCompleted: (res) => {
+          const { info, results } = res.characters;
+          dispatch(setInfo(info));
+          dispatch(setCharacters(results));
+          dispatch(setLoading(false));
+        },
+        onError: (err) => {
+          console.log(err);
+          dispatch(setLoading(false));
+        },
+      });
+    },
+    [getCharacterList, dispatch]
+  );
 
-  const getCharacter = (id: ID) => {
-    dispatch(setLoading(true));
-    getCharacterData({
-      variables: { id },
-      onCompleted: (res) => {
-        const { character } = res;
-        dispatch(setCharacter(character));
-        dispatch(setLoading(false));
-      },
-      onError: (err) => {
-        console.log(err);
-        dispatch(setLoading(false));
-      },
-    });
-  };
+  const getCharacter = useCallback(
+    (id: ID) => {
+      dispatch(setLoading(true));
+      getCharacterData({
+        variables: { id },
+        onCompleted: (res) => {
+          const { character } = res;
+          dispatch(setCharacter(character));
+          dispatch(setLoading(false));
+        },
+        onError: (err) => {
+          console.log(err);
+          dispatch(setLoading(false));
+        },
+      });
+    },
+    [getCharacterData, dispatch]
+  );
 
   return {
     loading,

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 export const useDebounceValue = (value: any, delay: number) => {
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -24,14 +24,11 @@ export const useDebounceFunction = (func: any, delay: number) => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [params]);
+  }, [params, delay, func]);
 
-  const debounceFunction = useCallback(
-    (...args: any) => {
-      setParams(args);
-    },
-    [func, delay]
-  );
+  const debounceFunction = useCallback((...args: any) => {
+    setParams(args);
+  }, []);
 
   return debounceFunction;
 };

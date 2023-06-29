@@ -24,7 +24,7 @@ const Characters = () => {
 
   useEffect(() => {
     debounceCharacters(page);
-  }, [page]);
+  }, [page, debounceCharacters]);
 
   return (
     <>
